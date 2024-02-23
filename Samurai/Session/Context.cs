@@ -1,27 +1,36 @@
 using System;
 using System.Collections.Generic;
-using Samurai.Application;
-using Samurai.Events;
+using Samurai.Game;
+using Samurai.Game.Events;
+using Samurai.Session.Example;
 
-namespace Samurai.Game
+namespace Samurai.Session
 {
-    public class Level : IDisposable
+    public class Context : IDisposable
     {
+        internal const string LogTag = "Session";
+        
         #region Static
 
-        private static Level _instance;
+        private static Context _instance;
         
         public static void Create()
         {
-            _instance = new Level();
+            _instance = new Context();
             
             Add(new EventAggregator(App.Get<EventAggregator>()));
+            Add(new ExampleModel());
+            Add(new ExampleSystem());
+            
+            Log.Debug("Initialized.", LogTag);
         }
 
         public static void Clear()
         {
             _instance?.Dispose();
             _instance = null;
+            
+            Log.Debug("Disposed.", LogTag);
         }
 
         #endregion Static
@@ -56,7 +65,7 @@ namespace Samurai.Game
             return App.Get<T>();
         }
 
-        private Level()
+        private Context()
         {
             
         }

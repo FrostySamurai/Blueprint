@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Samurai.Events
+namespace Samurai.Game.Events
 {
     public class EventAggregator : IDisposable
     {
@@ -57,7 +57,7 @@ namespace Samurai.Events
             GetChannel<T>().Raise(@event);
             foreach (var child in _children)
             {
-                child.Raise<T>(@event);
+                child.Raise(@event);
             }
         }
 

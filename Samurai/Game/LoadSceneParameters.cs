@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Samurai.Application
+namespace Samurai.Game
 {
     public struct LoadSceneParameters
     {

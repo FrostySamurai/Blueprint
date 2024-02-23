@@ -1,4 +1,4 @@
-﻿namespace Samurai.Events
+﻿namespace Samurai.Game.Events
 {
     public interface IEvent
     {

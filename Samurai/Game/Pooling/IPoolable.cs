@@ -1,4 +1,4 @@
-﻿namespace Samurai.Application.Pooling
+﻿namespace Samurai.Game.Pooling
 {
     public interface IPoolable
     {

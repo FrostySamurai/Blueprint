@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Samurai.Application
+namespace Samurai.Game
 {
     
     public class SceneLoader : MonoBehaviour

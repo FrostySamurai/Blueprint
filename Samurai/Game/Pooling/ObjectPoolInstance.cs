@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Samurai.Application.Pooling
+namespace Samurai.Game.Pooling
 {
     public class ObjectPoolInstance : MonoBehaviour
     {

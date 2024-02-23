@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Samurai.Events
+namespace Samurai.Game.Events
 {
     internal abstract class EventChannel
     {

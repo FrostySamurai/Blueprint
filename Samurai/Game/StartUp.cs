@@ -1,8 +1,8 @@
-﻿using Samurai.Application.Definitions;
+﻿using Samurai.Game.Definitions;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Samurai.Application
+namespace Samurai.Game
 {
     /// <summary>
     /// Prefab containing this script should be in every scene (so that you can startup the app from any scene and it starts up properly).
@@ -42,7 +42,7 @@ namespace Samurai.Application
             App.Add(_sceneLoader);
             App.Init();
             
-            _sceneLoader.LoadInitialScene(_settings.MainMenu);
+            _sceneLoader.LoadInitialScene(_settings.MainMenuScene);
         }
     }
 }
