@@ -11,6 +11,11 @@ since it's contained in a single context object.
 
 ## Includes
 
+### Start Up
+A simple script that enables to always correctly start up the game in editor, no matter what scene you were editing.
+You setup an initial scene (for me it's main menu) and then put a prefab containing this script into every scene.
+You also put SceneLoader, EventSystem and StandaloneInputSystem on this object (with the latter two being disabled).
+
 ### Event Aggregator
 Event system that allows to register to event channels. Channels can be created by creating struct/class that inherits from IEvent interface.
 It also supports parenting event aggregators to each other. The events propagate top-down, never bottom-up. This allows
