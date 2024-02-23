@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace Samurai.Game.UI
 {
-    public class MainMenu : MonoBehaviour
+    public class MainMenu : GameBehaviour
     {
         [Header("Interaction")]
         [SerializeField]
@@ -11,7 +11,7 @@ namespace Samurai.Game.UI
         [SerializeField]
         private Button _quitButton;
 
-        private void Start()
+        protected override void OnStart()
         {
             _playButton.SetOnClick(App.LoadLevel);
             _quitButton.SetOnClick(App.Quit);
