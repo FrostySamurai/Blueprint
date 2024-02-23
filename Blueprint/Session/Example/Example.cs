@@ -10,6 +10,15 @@ namespace Samurai.Session.Example
 
             var @event = new ExampleEvent(Context.Get<ExampleModel>().Number, Context.Get<ExampleSystem>().CalculateSomeData());
             Events.Raise(@event);
+            
+            Events.Unregister(this);
+            Events.Register<ExampleEvent>(x => Log.Debug($"Lambda callback!", "Example"), this);
+            
+            Events.Raise(@event);
+            
+            Events.Unregister<ExampleEvent>(this);
+            
+            Events.Raise(@event);
         }
 
         private void OnExampleEvent(ExampleEvent evt)

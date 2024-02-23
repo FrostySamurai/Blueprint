@@ -8,7 +8,8 @@ namespace Samurai.Game.Events
         private EventAggregator _parent;
         private List<EventAggregator> _children = new();
 
-        private Dictionary<Type, EventChannel> _channels = new();
+        private List<EventChannel> _channels = new();
+        private Dictionary<Type, EventChannel> _channelsByEvent = new();
 
         #region Lifecycle
 
@@ -42,14 +43,23 @@ namespace Samurai.Game.Events
             GetChannel<T>().Register(callback, source);
         }
 
-        public void Unregister<T>(Action<T> callback, object source) where T : IEvent
-        {
-            GetChannel<T>().Unregister(callback, source);
-        }
-
+        /// <summary>
+        /// Unregisters only specific event for passed object. 
+        /// </summary>
         public void Unregister<T>(object source) where T : IEvent
         {
             GetChannel<T>().Unregister(source);
+        }
+
+        /// <summary>
+        /// Unregisters all events for passed object.
+        /// </summary>
+        public void Unregister(object source)
+        {
+            foreach (var channel in _channels)
+            {
+                channel.Unregister(source);
+            }
         }
 
         public void Raise<T>(T @event) where T : IEvent
@@ -68,13 +78,14 @@ namespace Samurai.Game.Events
         private EventChannel<T> GetChannel<T>() where T : IEvent
         {
             var type = typeof(T);
-            if (_channels.TryGetValue(type, out var channel))
+            if (_channelsByEvent.TryGetValue(type, out var channel))
             {
                 return (EventChannel<T>)channel;
             }
 
             var typedChannel = new EventChannel<T>();
-            _channels[type] = typedChannel;
+            _channels.Add(typedChannel);
+            _channelsByEvent[type] = typedChannel;
             return typedChannel;
         }
 

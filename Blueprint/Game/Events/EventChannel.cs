@@ -6,6 +6,8 @@ namespace Samurai.Game.Events
     internal abstract class EventChannel
     {
         internal abstract Type DataType { get; }
+
+        internal abstract void Unregister(object source);
     }
 
     internal class EventChannel<T> : EventChannel where T : IEvent
@@ -26,12 +28,7 @@ namespace Samurai.Game.Events
             _callbacksBySource[source] = callback;
         }
 
-        internal void Unregister(Action<T> callback, object source)
-        {
-            Remove(callback, source);
-        }
-
-        internal void Unregister(object source)
+        internal override void Unregister(object source)
         {
             if (_callbacksBySource.TryGetValue(source, out var callback))
             {
@@ -51,7 +48,7 @@ namespace Samurai.Game.Events
         {
             _callbacksBySource.Remove(source);
             int index = _callbacks.FindIndex(x => x == callback);
-            if (index > 0)
+            if (index >= 0)
             {
                 _callbacks.RemoveAt(index);
             }
