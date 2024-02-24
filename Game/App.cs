@@ -24,10 +24,11 @@ namespace Samurai.Game
         internal static void Init(SceneLoader sceneLoader)
         {
             _sceneLoader = sceneLoader;
+
+            Definitions.Create(Get<AppSettings>().DefinitionsFolder);
             
             Add(new ComponentPool());
             Add(new EventAggregator());
-            Add(new Definitions(Get<AppSettings>().DefinitionsFolder));
 
             Log.Debug("Initialized.", LogTag);
         }
@@ -77,6 +78,8 @@ namespace Samurai.Game
         
         public static void Quit()
         {
+            Definitions.Clear();
+            
 #if UNITY_EDITOR
             EditorApplication.isPlaying = false;
 #else

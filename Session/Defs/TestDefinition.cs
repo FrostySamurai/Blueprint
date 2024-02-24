@@ -1,4 +1,4 @@
-﻿using Samurai.Game;
+﻿using Samurai.Game.Defs;
 using UnityEngine;
 
 namespace Samurai.Session.Defs

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Samurai.Game
+namespace Samurai.Game.Defs
 {
     internal abstract class DefinitionStorage
     {

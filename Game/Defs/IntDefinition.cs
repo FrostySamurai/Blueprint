@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Samurai.Game
+namespace Samurai.Game.Defs
 {
     public abstract class IntDefinition : Definition, IIdentifiable<int>
     {
