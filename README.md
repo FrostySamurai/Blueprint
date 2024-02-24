@@ -1,5 +1,6 @@
 # Blueprint
-A simple framework for small scale Unity projects.
+A simple framework for small scale Unity projects. The main point is being able to access data from anywhere, tight coupling between objects,
+and separating session data so that stuff like saving, loading, restarting the game etc. is simpler.
 
 Architecture is split into to parts.
 
