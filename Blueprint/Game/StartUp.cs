@@ -39,8 +39,7 @@ namespace Samurai.Game
             EventSystem.current = _eventSystem;
 
             App.Add(_settings);
-            App.Add(_sceneLoader);
-            App.Init();
+            App.Init(_sceneLoader);
             
             _sceneLoader.LoadInitialScene(_settings.MainMenuScene);
         }

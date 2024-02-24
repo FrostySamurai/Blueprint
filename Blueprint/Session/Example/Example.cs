@@ -4,11 +4,17 @@ namespace Samurai.Session.Example
 {
     public class Example : SessionBehaviour
     {
+        private const int ExpectedNumber = 10;
+        
         protected override void OnStart()
         {
+            var exampleModel = Context.Get<ExampleModel>();
+            Log.Debug($"Current value of model number is '{exampleModel.Number}'.", "Example");
+            exampleModel.Number = ExpectedNumber;
+            
             Events.Register<ExampleEvent>(OnExampleEvent, this);
 
-            var @event = new ExampleEvent(Context.Get<ExampleModel>().Number, Context.Get<ExampleSystem>().CalculateSomeData());
+            var @event = new ExampleEvent(exampleModel.Number, Context.Get<ExampleSystem>().CalculateSomeData());
             Events.Raise(@event);
             
             Events.Unregister(this);
@@ -23,8 +29,7 @@ namespace Samurai.Session.Example
 
         private void OnExampleEvent(ExampleEvent evt)
         {
-            int expectedId = 6;
-            if (!evt.IsMatch(expectedId))
+            if (!evt.IsMatch(ExpectedNumber))
             {
                 return;
             }

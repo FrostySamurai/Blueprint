@@ -19,9 +19,12 @@ namespace Samurai.Game
         internal static string LogTag = "Application";
         
         private static Dictionary<Type, object> _content = new();
+        private static SceneLoader _sceneLoader;
 
-        internal static void Init()
+        internal static void Init(SceneLoader sceneLoader)
         {
+            _sceneLoader = sceneLoader;
+            
             Add(new ComponentPool());
             Add(new EventAggregator());
 
@@ -45,11 +48,9 @@ namespace Samurai.Game
             Context.Create();
 
             var def = Get<AppDefinition>();
-            var sceneLoader = Get<SceneLoader>();
-            
             var unloadParameters = new LoadSceneParameters(def.MainMenuScene, OnSceneSwitched);
-            var loadParameters = new LoadSceneParameters(def.SessionScene, () => sceneLoader.UnloadScene(unloadParameters));
-            sceneLoader.LoadScene(loadParameters);
+            var loadParameters = new LoadSceneParameters(def.SessionScene, () => _sceneLoader.UnloadScene(unloadParameters));
+            _sceneLoader.LoadScene(loadParameters);
 
             void OnSceneSwitched()
             {
@@ -62,11 +63,9 @@ namespace Samurai.Game
             Log.Debug("Ending session.", LogTag);
             
             var def = Get<AppDefinition>();
-            var sceneLoader = Get<SceneLoader>();
-            
             var unloadParameters = new LoadSceneParameters(def.SessionScene, OnSceneSwitched);
-            var loadParameters = new LoadSceneParameters(def.MainMenuScene, () => sceneLoader.UnloadScene(unloadParameters));
-            sceneLoader.LoadScene(loadParameters);
+            var loadParameters = new LoadSceneParameters(def.MainMenuScene, () => _sceneLoader.UnloadScene(unloadParameters));
+            _sceneLoader.LoadScene(loadParameters);
 
             void OnSceneSwitched()
             {
