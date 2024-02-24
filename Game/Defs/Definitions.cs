@@ -32,19 +32,39 @@ namespace Samurai.Game.Defs
             Log.Debug("Disposed.", LogTag);
         }
         
-        public static TDefinition Get<TDefinition, TKey>(TKey key) where TDefinition : Definition, IIdentifiable<TKey>
+        public static TDefinition Get<TDefinition, TKey>(TKey key) 
+            where TDefinition : Definition, IIdentifiable<TKey>
         {
-            return _instance.GetStorage<TDefinition, TKey>().Get(key);
+            return _instance.TryGetStorage<TDefinition, TKey>(out var storage) ? storage.Get(key) : null;
         }
 
-        public static IEnumerable<TDefinition> Get<TDefinition, TKey>() where TDefinition : Definition, IIdentifiable<TKey>
+        public static IEnumerable<TDefinition> Get<TDefinition, TKey>() 
+            where TDefinition : Definition, IIdentifiable<TKey>
         {
-            return _instance.GetStorage<TDefinition, TKey>();
+            return _instance.TryGetStorage<TDefinition, TKey>(out var storage) ? storage : null;
         }
 
-        public static void Get<TDefinition, TKey>(List<TDefinition> definitions) where TDefinition : Definition, IIdentifiable<TKey>
+        public static void Get<TDefinition, TKey>(List<TDefinition> result, Predicate<TDefinition> predicate = null)
+            where TDefinition : Definition, IIdentifiable<TKey>
         {
-            definitions.AddRange(_instance.GetStorage<TDefinition, TKey>());
+            if (!_instance.TryGetStorage<TDefinition, TKey>(out var storage))
+            {
+                return;
+            }
+            
+            if (predicate == null)
+            {
+                result.AddRange(storage);
+                return;
+            }
+            
+            foreach (var definition in storage)
+            {
+                if (predicate(definition))
+                {
+                    result.Add(definition);
+                }
+            }
         }
 
         #endregion Static
@@ -75,14 +95,16 @@ namespace Samurai.Game.Defs
             }
         }
 
-        private DefinitionStorage<TDefinition, TKey> GetStorage<TDefinition, TKey>() where TDefinition : Definition, IIdentifiable<TKey>
+        private bool TryGetStorage<TDefinition, TKey>(out DefinitionStorage<TDefinition, TKey> result) where TDefinition : Definition, IIdentifiable<TKey>
         {
+            result = null;
             if (!_storages.TryGetValue(typeof(TDefinition), out var storage))
             {
-                return default;
+                return false;
             }
 
-            return (DefinitionStorage<TDefinition, TKey>)storage;
+            result = (DefinitionStorage<TDefinition, TKey>)storage; 
+            return true;
         }
     }
 }
