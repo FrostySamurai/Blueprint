@@ -17,6 +17,11 @@ A simple script that enables to always correctly start up the game in editor, no
 You setup an initial scene (for me it's main menu) and then put a prefab containing this script into every scene.
 You also put SceneLoader, EventSystem and StandaloneInputSystem on this object (with the latter two being disabled).
 
+### Definitions
+Definition system that supports definitions with string and int ids. These are currently required to reside inside
+resources folder. They should be contained within a folder (for example Definitions) and this folder needs to be
+specified in AppSettings.
+
 ### Event Aggregator
 Event system that allows to register to event channels. Channels can be created by creating struct/class that inherits from IEvent interface.
 It also supports parenting event aggregators to each other. The events propagate top-down, never bottom-up. This allows
@@ -25,8 +30,3 @@ without the worries of having a forgotten callback between sessions.
 
 ### Pooling
 Simple component pool.
-
-## Planned
-
-- Definitions
-
