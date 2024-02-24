@@ -1,4 +1,4 @@
-﻿using Samurai.Game.Definitions;
+﻿using Samurai.Game.Defs;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -14,7 +14,7 @@ namespace Samurai.Game
         private static bool _wasStartedUp;
         
         [SerializeField]
-        private AppDefinition _settings;
+        private AppSettings _settings;
         [SerializeField]
         private SceneLoader _sceneLoader;
         [SerializeField]

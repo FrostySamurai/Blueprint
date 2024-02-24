@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Samurai.Game.Definitions;
+using Samurai.Game.Defs;
 using Samurai.Game.Events;
 using Samurai.Game.Pooling;
 using Samurai.Session;
@@ -27,6 +27,7 @@ namespace Samurai.Game
             
             Add(new ComponentPool());
             Add(new EventAggregator());
+            Add(new Definitions(Get<AppSettings>().DefinitionsFolder));
 
             Log.Debug("Initialized.", LogTag);
         }
@@ -47,7 +48,7 @@ namespace Samurai.Game
             
             Context.Create();
 
-            var def = Get<AppDefinition>();
+            var def = Get<AppSettings>();
             var unloadParameters = new LoadSceneParameters(def.MainMenuScene, OnSceneSwitched);
             var loadParameters = new LoadSceneParameters(def.SessionScene, () => _sceneLoader.UnloadScene(unloadParameters));
             _sceneLoader.LoadScene(loadParameters);
@@ -62,7 +63,7 @@ namespace Samurai.Game
         {
             Log.Debug("Ending session.", LogTag);
             
-            var def = Get<AppDefinition>();
+            var def = Get<AppSettings>();
             var unloadParameters = new LoadSceneParameters(def.SessionScene, OnSceneSwitched);
             var loadParameters = new LoadSceneParameters(def.MainMenuScene, () => _sceneLoader.UnloadScene(unloadParameters));
             _sceneLoader.LoadScene(loadParameters);
