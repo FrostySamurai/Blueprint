@@ -13,7 +13,7 @@ namespace Samurai.Game.Defs
         private readonly List<TDefinition> _definitions = new();
         private readonly Dictionary<TKey, TDefinition> _definitionsById = new();
 
-        public DefinitionStorage(IEnumerable<object> definitions)
+        public DefinitionStorage(IEnumerable<Definition> definitions)
         {
             var typedDefinitions = definitions.Cast<TDefinition>();
             _definitions.AddRange(typedDefinitions);

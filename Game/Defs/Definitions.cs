@@ -76,7 +76,7 @@ namespace Samurai.Game.Defs
             string identifiableTypeName = typeof(IIdentifiable<>).Name;
             var storageType = typeof(DefinitionStorage<,>);
             
-            var definitions = Resources.LoadAll(folder);
+            var definitions = Resources.LoadAll<Definition>(folder);
             var grouped = definitions.GroupBy(x => x.GetType());
             foreach (var group in grouped)
             {
