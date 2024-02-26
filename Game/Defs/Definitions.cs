@@ -32,79 +32,65 @@ namespace Samurai.Game.Defs
             Log.Debug("Disposed.", LogTag);
         }
         
-        public static TDefinition Get<TDefinition, TKey>(TKey key) 
-            where TDefinition : Definition, IIdentifiable<TKey>
+        public static T Get<T>(string id) where T : Definition
         {
-            return _instance.TryGetStorage<TDefinition, TKey>(out var storage) ? storage.Get(key) : null;
+            if (!_instance._definitions.TryGetValue(typeof(T), out var definitions))
+            {
+                return null;
+            }
+
+            return definitions.TryGetValue(id, out var definition) ? (T)definition : null;
         }
 
-        public static IEnumerable<TDefinition> Get<TDefinition, TKey>() 
-            where TDefinition : Definition, IIdentifiable<TKey>
+        public static IEnumerable<T> Get<T>(Predicate<T> predicate = null) where T : Definition
         {
-            return _instance.TryGetStorage<TDefinition, TKey>(out var storage) ? storage : null;
+            if (!_instance._definitions.TryGetValue(typeof(T), out var definitions))
+            {
+                return Enumerable.Empty<T>();
+            }
+
+            var typed = definitions.Values.Cast<T>();
+            return predicate != null ? typed.Where(x => predicate(x)) : typed;
         }
 
-        public static void Get<TDefinition, TKey>(List<TDefinition> result, Predicate<TDefinition> predicate = null)
-            where TDefinition : Definition, IIdentifiable<TKey>
+        public static void Get<T>(List<T> result, Predicate<T> predicate = null) where T : Definition
         {
-            if (!_instance.TryGetStorage<TDefinition, TKey>(out var storage))
+            if (!_instance._definitions.TryGetValue(typeof(T), out var definitions))
             {
                 return;
             }
-            
+
+            var typed = definitions.Values.Cast<T>();
             if (predicate == null)
             {
-                result.AddRange(storage);
+                result.AddRange(typed);
                 return;
             }
-            
-            foreach (var definition in storage)
-            {
-                if (predicate(definition))
-                {
-                    result.Add(definition);
-                }
-            }
+
+            result.AddRange(typed.Where(x => predicate(x)));
         }
 
         #endregion Static
         
-        private readonly Dictionary<Type, DefinitionStorage> _storages = new();
+        private readonly Dictionary<Type, Dictionary<string, Definition>> _definitions = new();
 
         private Definitions(string folder)
         {
-            string identifiableTypeName = typeof(IIdentifiable<>).Name;
-            var storageType = typeof(DefinitionStorage<,>);
-            
             var definitions = Resources.LoadAll<Definition>(folder);
             var grouped = definitions.GroupBy(x => x.GetType());
             foreach (var group in grouped)
             {
-                var definitionType = group.Key;
-                var @interface = definitionType.GetInterface(identifiableTypeName);
-                if (@interface == null)
+                var dict = new Dictionary<string, Definition>();
+                foreach (var entry in group)
                 {
-                    Log.Warning($"No IIdentifiable<TKey> interface found on definition type '{definitionType.Name}'. Skipping..", LogTag);
-                    continue;
+                    if (!dict.TryAdd(entry.Id, entry))
+                    {
+                        Log.Warning($"Duplicate id '{entry.Id}' for definition type '{group.Key.Name}'.", LogTag);
+                    }
                 }
 
-                var keyType = @interface.GetGenericArguments()[0];
-                var currentStorageType = storageType.MakeGenericType(definitionType, keyType);
-                object instance = Activator.CreateInstance(currentStorageType, group);
-                _storages[definitionType] = (DefinitionStorage)instance;
+                _definitions[group.Key] = dict;
             }
-        }
-
-        private bool TryGetStorage<TDefinition, TKey>(out DefinitionStorage<TDefinition, TKey> result) where TDefinition : Definition, IIdentifiable<TKey>
-        {
-            result = null;
-            if (!_storages.TryGetValue(typeof(TDefinition), out var storage))
-            {
-                return false;
-            }
-
-            result = (DefinitionStorage<TDefinition, TKey>)storage; 
-            return true;
         }
     }
 }

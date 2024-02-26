@@ -8,7 +8,7 @@ namespace Samurai.Session.Example
     {
         public string CalculateSomeData()
         {
-            var def = Definitions.Get<TestDefinition, int>(0);
+            var def = Definitions.Get<TestDefinition>("test");
             if (def != null)
             {
                 return def.Value;

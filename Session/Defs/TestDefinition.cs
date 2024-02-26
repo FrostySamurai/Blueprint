@@ -4,8 +4,9 @@ using UnityEngine;
 namespace Samurai.Session.Defs
 {
     [CreateAssetMenu(fileName = "Test", menuName = "Definitions/Test")]
-    public class TestDefinition : IntDefinition
+    public class TestDefinition : Definition
     {
+        [Space]
         public string Value;
     }
 }
