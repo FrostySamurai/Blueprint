@@ -1,4 +1,4 @@
-﻿using Samurai.Application.NDefinitions;
+﻿using Samurai.Application;
 using Samurai.NSession.NDefinitions;
 
 namespace Samurai.NSession.Example

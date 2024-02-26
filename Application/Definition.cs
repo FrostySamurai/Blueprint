@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Samurai.Application.NDefinitions
+namespace Samurai.Application
 {
     public abstract class Definition : ScriptableObject
     {

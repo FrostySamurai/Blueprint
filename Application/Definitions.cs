@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Samurai.Application.NDefinitions
+namespace Samurai.Application
 {
     
     public class Definitions
     {
         internal const string LogTag = "Definitions";
 
+        private const string DefinitionsFolder = "Definitions";
+        private const string ConfigsFolder = "Configs";
+
         #region Static
 
         private static Definitions _instance;
 
-        internal static void Create(string folder)
+        internal static void Create()
         {
             if (_instance != null)
             {
@@ -22,7 +25,7 @@ namespace Samurai.Application.NDefinitions
                 return;
             }
 
-            _instance = new Definitions(folder);
+            _instance = new Definitions();
             Log.Debug("Initialized.", LogTag);
         }
 
@@ -30,6 +33,11 @@ namespace Samurai.Application.NDefinitions
         {
             _instance = null;
             Log.Debug("Disposed.", LogTag);
+        }
+
+        public static T Config<T>() where T : Config
+        {
+            return _instance._configs.TryGetValue(typeof(T), out var config) ? (T)config : null;
         }
         
         public static T Get<T>(string id) where T : Definition
@@ -73,10 +81,11 @@ namespace Samurai.Application.NDefinitions
         #endregion Static
         
         private readonly Dictionary<Type, Dictionary<string, Definition>> _definitions = new();
+        private readonly Dictionary<Type, Config> _configs = new();
 
-        private Definitions(string folder)
+        private Definitions()
         {
-            var definitions = Resources.LoadAll<Definition>(folder);
+            var definitions = Resources.LoadAll<Definition>(DefinitionsFolder);
             var grouped = definitions.GroupBy(x => x.GetType());
             foreach (var group in grouped)
             {
@@ -90,6 +99,15 @@ namespace Samurai.Application.NDefinitions
                 }
 
                 _definitions[group.Key] = dict;
+            }
+
+            var settings = Resources.LoadAll<Config>(ConfigsFolder);
+            foreach (var setting in settings)
+            {
+                if (!_configs.TryAdd(setting.GetType(), setting))
+                {
+                    Log.Warning($"Duplicate settings of type '{_configs.GetType().Name}'.", LogTag);
+                }
             }
         }
     }

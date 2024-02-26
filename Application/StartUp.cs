@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Samurai.Application.Configs;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Samurai.Application
@@ -12,8 +13,6 @@ namespace Samurai.Application
     {
         private static bool _wasStartedUp;
         
-        [SerializeField]
-        private AppSettings _settings;
         [SerializeField]
         private SceneLoader _sceneLoader;
         [SerializeField]
@@ -37,10 +36,11 @@ namespace Samurai.Application
 
             EventSystem.current = _eventSystem;
 
-            App.Add(_settings);
+            Definitions.Create();
+            
             App.Init(_sceneLoader);
             
-            _sceneLoader.LoadInitialScene(_settings.AppScene);
+            _sceneLoader.LoadInitialScene(Definitions.Config<AppConfig>().AppScene);
         }
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Samurai.Application.Configs;
 using Samurai.Application.Events;
-using Samurai.Application.NDefinitions;
 using Samurai.Application.Pooling;
 using Samurai.NSession;
 using UnityEditor;
@@ -24,8 +24,6 @@ namespace Samurai.Application
         internal static void Init(SceneLoader sceneLoader)
         {
             _sceneLoader = sceneLoader;
-
-            Definitions.Create(Get<AppSettings>().DefinitionsFolder);
             
             Add(new ComponentPool());
             Add(new EventAggregator());
@@ -49,7 +47,7 @@ namespace Samurai.Application
             
             Session.Create();
 
-            var def = Get<AppSettings>();
+            var def = Definitions.Config<AppConfig>();
             var unloadParameters = new LoadSceneParameters(def.AppScene, OnSceneSwitched);
             var loadParameters = new LoadSceneParameters(def.SessionScene, () => _sceneLoader.UnloadScene(unloadParameters));
             _sceneLoader.LoadScene(loadParameters);
@@ -64,7 +62,7 @@ namespace Samurai.Application
         {
             Log.Debug("Ending session.", LogTag);
             
-            var def = Get<AppSettings>();
+            var def = Definitions.Config<AppConfig>();
             var unloadParameters = new LoadSceneParameters(def.SessionScene, OnSceneSwitched);
             var loadParameters = new LoadSceneParameters(def.AppScene, () => _sceneLoader.UnloadScene(unloadParameters));
             _sceneLoader.LoadScene(loadParameters);
