@@ -72,7 +72,6 @@ namespace Samurai.NSession
 
         private void DisposeInternal()
         {
-            _content.Clear();
             foreach (var entry in _content.Values)
             {
                 if (entry is IDisposable disposable)
@@ -80,6 +79,8 @@ namespace Samurai.NSession
                     disposable.Dispose();
                 }
             }
+
+            _content.Clear();
         }
     }
 }
