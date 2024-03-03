@@ -97,7 +97,7 @@ namespace Samurai.Application.Saving
                     continue;
                 }
 
-                object entryState = savable.GetSave();
+                object entryState = savable.GetSaveState();
                 if (!entryState.GetType().IsSerializable)
                 {
                     Log.Error($"Savable's '{savable.Id}' state of type '{entryState.GetType().Name}' is not Serializable. Skipping..", LogTag);

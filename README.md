@@ -29,4 +29,21 @@ session to have it's own event aggregator that still receives global events (for
 without the worries of having a forgotten callback between sessions.
 
 ### Pooling
-Simple component pool.
+Simple component pool. Allows to save resources by not destroying dynamic objects and leaving them for later use.
+
+### Saves
+Saves are separated in sessions, which have their own save files (therefore you can have saves with the same name if
+it is in different sessions).
+
+When starting a new session, you specify session id. This could be for example a character name in an RPG game.
+Optionally you can specify a save name which will start the session with loading the save file. Afterwards you can
+access the saved state through Session.
+
+Everything that needs saving has to implement ISavable interface. Every saved object needs a unique id and serializable
+state object.
+
+Save files are saved in the persistant files folder. The concrete subfolder and whether autosaves should be used can be
+specified in AppConfig.
+
+## TODO
+- Improve readme by including example usage code

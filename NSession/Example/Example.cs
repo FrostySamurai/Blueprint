@@ -18,7 +18,7 @@ namespace Samurai.NSession.Example
 
         protected override void OnLoad()
         {
-            string state = Session.GetSaveState<string>(Id);
+            string state = Session.LoadState<string>(Id);
             Log.Debug($"Loaded value '{state}'", "Example");
         }
 
@@ -43,7 +43,7 @@ namespace Samurai.NSession.Example
             Session.Events.Raise(@event);
         }
 
-        public object GetSave()
+        public object GetSaveState()
         {
             return FakeSaveStuff;
         }

@@ -98,7 +98,18 @@ namespace Samurai.NSession
             return _instance._saveState is not null;
         }
 
-        public static T GetSaveState<T>(string id)
+        public static bool TryLoadState<T>(string id, out T state)
+        {
+            state = default;
+            if (!HasSave())
+            {
+                return false;
+            }
+
+            return _instance._saveState.TryGet(id, out state);
+        }
+
+        public static T LoadState<T>(string id)
         {
             if (!HasSave())
             {
