@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Samurai.Application;
 using Samurai.Application.Configs;
 using Samurai.Application.Events;
+using Samurai.Application.Pooling;
 using Samurai.Application.Saving;
 using Samurai.NSession.Example;
 
@@ -15,6 +16,9 @@ namespace Samurai.NSession
         #region Static
 
         private static Session _instance;
+
+        public static ComponentPool Pool => App.Get<ComponentPool>();
+        public static EventAggregator Events => Get<EventAggregator>();
 
         #region Lifecycle
 

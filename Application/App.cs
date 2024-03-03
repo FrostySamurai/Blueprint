@@ -22,6 +22,9 @@ namespace Samurai.Application
         private static Dictionary<Type, object> _content = new();
         private static SceneLoader _sceneLoader;
 
+        public static ComponentPool Pool => Get<ComponentPool>();
+        public static EventAggregator Events => Get<EventAggregator>();
+
         internal static void Init(SceneLoader sceneLoader)
         {
             _sceneLoader = sceneLoader;

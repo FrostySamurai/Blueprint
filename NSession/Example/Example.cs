@@ -28,19 +28,19 @@ namespace Samurai.NSession.Example
             Log.Debug($"Current value of model number is '{exampleModel.Number}'.", "Example");
             exampleModel.Number = ExpectedNumber;
             
-            Events.Register<ExampleEvent>(OnExampleEvent, this);
+            Session.Events.Register<ExampleEvent>(OnExampleEvent, this);
 
             var @event = new ExampleEvent(exampleModel.Number, Session.Get<ExampleSystem>().CalculateSomeData());
-            Events.Raise(@event);
+            Session.Events.Raise(@event);
             
-            Events.Unregister(this);
-            Events.Register<ExampleEvent>(x => Log.Debug($"Lambda callback!", "Example"), this);
+            Session.Events.Unregister(this);
+            Session.Events.Register<ExampleEvent>(x => Log.Debug($"Lambda callback!", "Example"), this);
             
-            Events.Raise(@event);
+            Session.Events.Raise(@event);
             
-            Events.Unregister<ExampleEvent>(this);
+            Session.Events.Unregister<ExampleEvent>(this);
             
-            Events.Raise(@event);
+            Session.Events.Raise(@event);
         }
 
         public object GetSave()

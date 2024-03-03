@@ -30,15 +30,14 @@ namespace Samurai.Application.UI
 
         public void Init()
         {
-            InitReferences();
             _saves = App.Get<SaveSystem>();
             
-            Pool.ReturnChildren(_buttonPrefab, _sessionsPanel);
-            Pool.ReturnChildren(_buttonPrefab, _savesPanel);
+            App.Pool.ReturnChildren(_buttonPrefab, _sessionsPanel);
+            App.Pool.ReturnChildren(_buttonPrefab, _savesPanel);
             foreach (var entry in _saves.Saves)
             {
                 string sessionId = entry.SessionId;
-                var instance = Pool.Retrieve(_buttonPrefab, _sessionsPanel);
+                var instance = App.Pool.Retrieve(_buttonPrefab, _sessionsPanel);
                 instance.Init(entry.SessionId, () => ShowSaves(sessionId));
             }
 
@@ -61,7 +60,7 @@ namespace Samurai.Application.UI
 
         private void ShowSaves(string sessionId)
         {
-            Pool.ReturnChildren(_buttonPrefab, _savesPanel);
+            App.Pool.ReturnChildren(_buttonPrefab, _savesPanel);
 
             var saves = _saves.GetSaves(sessionId);
             if (!saves.IsValid())
@@ -75,7 +74,7 @@ namespace Samurai.Application.UI
             foreach (string entry in saves.SaveFiles)
             {
                 string saveName = entry;
-                var instance = Pool.Retrieve(_buttonPrefab, _savesPanel);
+                var instance = App.Pool.Retrieve(_buttonPrefab, _savesPanel);
                 instance.Init(saveName, () => LoadSave(sessionId, saveName));
             }
         }
