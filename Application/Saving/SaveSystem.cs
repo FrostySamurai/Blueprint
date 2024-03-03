@@ -54,6 +54,15 @@ namespace Samurai.Application.Saving
 
         #endregion Lifecycle
 
+        #region Queries
+
+        public SessionSaves GetSaves(string sessionId)
+        {
+            return _saves.FirstOrDefault(x => x.SessionId == sessionId);
+        }
+
+        #endregion Queries
+
         #region Public
         
         public SaveState Load(string sessionId, string fileName)

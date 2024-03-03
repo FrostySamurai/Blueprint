@@ -13,9 +13,7 @@ namespace Samurai.NSession
                 return;
             }
             
-            Events = Session.Get<EventAggregator>();
-            Pool = Session.Get<ComponentPool>();
-            
+            InitReferences();
             OnAwake();
 
             if (Session.HasSave())
@@ -26,6 +24,12 @@ namespace Samurai.NSession
 
         protected virtual void OnLoad()
         {
+        }
+
+        protected override void InitReferences()
+        {
+            Events = Session.Get<EventAggregator>();
+            Pool = Session.Get<ComponentPool>();
         }
     }
 }

@@ -12,9 +12,7 @@ namespace Samurai.Application
 
         protected virtual void Awake()
         {
-            Events = App.Get<EventAggregator>();
-            Pool = App.Get<ComponentPool>();
-            
+            InitReferences();
             OnAwake();
         }
 
@@ -40,6 +38,12 @@ namespace Samurai.Application
         protected virtual void OnLateStart()
         {
             
+        }
+
+        protected virtual void InitReferences()
+        {
+            Events = App.Get<EventAggregator>();
+            Pool = App.Get<ComponentPool>();
         }
     }
 }

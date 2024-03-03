@@ -14,5 +14,7 @@ namespace Samurai.Application.Saving
             SessionId = sessionId;
             _saveFiles = new List<string>(saves);
         }
+
+        public bool IsValid() => !string.IsNullOrEmpty(SessionId);
     }
 }
