@@ -9,5 +9,9 @@ namespace Samurai.Application.Configs
         [Tooltip("First scene that is loaded upon game start. It should also be first in build order.")]
         public string AppScene;
         public string SessionScene;
+
+        [Header("Saves")]
+        public string SaveFolder;
+        public bool EnableAutosaves = true;
     }
 }

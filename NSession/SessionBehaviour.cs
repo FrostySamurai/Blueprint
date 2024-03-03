@@ -17,6 +17,15 @@ namespace Samurai.NSession
             Pool = Session.Get<ComponentPool>();
             
             OnAwake();
+
+            if (Session.HasSave())
+            {
+                OnLoad();
+            }
+        }
+
+        protected virtual void OnLoad()
+        {
         }
     }
 }

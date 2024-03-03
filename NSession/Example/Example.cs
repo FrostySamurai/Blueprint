@@ -1,11 +1,27 @@
 ﻿using Samurai.Application;
+using Samurai.Application.Saving;
 
 namespace Samurai.NSession.Example
 {
-    public class Example : SessionBehaviour
+    public class Example : SessionBehaviour, ISavable
     {
         private const int ExpectedNumber = 10;
-        
+        private const string FakeSaveStuff = "fake";
+
+        // this should be handled trough model and instances should have guid assigned
+        public string Id => "example";
+
+        protected override void OnAwake()
+        {
+            Session.Register(this);
+        }
+
+        protected override void OnLoad()
+        {
+            string state = Session.GetSaveState<string>(Id);
+            Log.Debug($"Loaded value '{state}'", "Example");
+        }
+
         protected override void OnStart()
         {
             var exampleModel = Session.Get<ExampleModel>();
@@ -25,6 +41,11 @@ namespace Samurai.NSession.Example
             Events.Unregister<ExampleEvent>(this);
             
             Events.Raise(@event);
+        }
+
+        public object GetSave()
+        {
+            return FakeSaveStuff;
         }
 
         private void OnExampleEvent(ExampleEvent evt)

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Samurai.Application.Saving;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Samurai.Application.UI
@@ -13,7 +14,11 @@ namespace Samurai.Application.UI
 
         protected override void OnStart()
         {
-            _playButton.SetOnClick(App.StartSession);
+            // TODO: do the example loading, only show Load button if there are saves
+            // TODO: add text field for new game name
+            
+            string saveName = "game";
+            _playButton.SetOnClick(() => App.StartSession(saveName));
             _quitButton.SetOnClick(App.Quit);
         }
     }

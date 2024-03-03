@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Samurai.Application.Configs;
 using Samurai.Application.Events;
 using Samurai.Application.Pooling;
+using Samurai.Application.Saving;
 using Samurai.NSession;
 using UnityEditor;
 
@@ -24,7 +25,8 @@ namespace Samurai.Application
         internal static void Init(SceneLoader sceneLoader)
         {
             _sceneLoader = sceneLoader;
-            
+
+            Add(new SaveSystem());
             Add(new ComponentPool());
             Add(new EventAggregator());
 
@@ -41,11 +43,11 @@ namespace Samurai.Application
             return _content.TryGetValue(typeof(T), out var obj) ? (T)obj : default;
         }
 
-        public static void StartSession()
+        public static void StartSession(string sessionId, string saveName = null)
         {
             Log.Debug("Starting session.", LogTag);
             
-            Session.Create();
+            Session.Create(sessionId, saveName);
 
             var def = Definitions.Config<AppConfig>();
             var unloadParameters = new LoadSceneParameters(def.AppScene, OnSceneSwitched);
